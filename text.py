@@ -381,8 +381,14 @@ def main():
         key="who"
     )
 
-    # 3) 여행 유형
-    all_travel_types = sorted(list(set([t for season in travel_data.values() for item in season for t in item["travel_type"]])))
+    # 3) 여행 유형 (전체 travel_type 모으기)
+    all_travel_types = sorted(list(set(
+        [t for season in travel_data.values() for item in season for t in item["travel_type"]]
+    )))
+
+# 🔧 travel_type에서만 "겨울" 제거
+    if "겨울" in all_travel_types:
+        all_travel_types.remove("겨울")
 
     travel_preferences = st.sidebar.multiselect(
         "🗺️ **어떤 종류의 여행을 원하시나요? (다중 선택 가능)**",
@@ -390,6 +396,7 @@ def main():
         default=st.session_state["types"],
         key="types"
     )
+
 
     # 4) 초기화 함수 + 버튼
     def reset_filters():
