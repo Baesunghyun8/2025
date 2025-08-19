@@ -410,19 +410,19 @@ def main():
     season_destinations = travel_data.get(selected_season, [])
 
     filtered_destinations = []                # ← main() 내부: 앞에 4칸
-        for dest in season_destinations:          # ← 위와 같은 4칸
+    for dest in season_destinations:          # ← 위와 같은 4칸
     # ↓↓↓ for 블록 내부는 추가로 4칸(총 8칸) 들여쓰기
     # 1) '누구와' 필터 (전체 보기면 건너뜀)
-    if who_with != "누구와든 좋아요! (전체 보기)":
-        if who_with not in dest.get("target_group", []):
-            continue
+        if who_with != "누구와든 좋아요! (전체 보기)":
+            if who_with not in dest.get("target_group", []):
+                continue
 
     # 2) '여행 유형' 필터 (선택이 있을 때만 AND 조건)
-    if travel_preferences:
-        if not all(pref in dest.get("travel_type", []) for pref in travel_preferences):
-            continue
+        if travel_preferences:
+            if not all(pref in dest.get("travel_type", []) for pref in travel_preferences):
+                continue
 
-    filtered_destinations.append(dest)
+        filtered_destinations.append(dest)
 
 # ↓ 여기서부터는 기존의 표시(UI) 코드로 이어가세요.
 
