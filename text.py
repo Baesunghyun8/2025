@@ -407,27 +407,23 @@ def main():
     ...
 
     # --- 여행지 필터링 로직 ---
-    # 이제 'selected_season' 변수를 사용합니다.
     season_destinations = travel_data.get(selected_season, [])
-    
+
     filtered_destinations = []
     for dest in season_destinations:
-        # 1. '누구와' 필터 적용
-        # "누구와든 좋아요!" 선택 시에는 이 필터를 건너김
-        if who_with != "누구와든 좋아요! (전체 보기)":
-            if who_with not in dest.get("target_group", []):
-                continue # 현재 여행지가 선택된 대상 그룹에 속하지 않으면 다음 여행지로
+    # 1) '누구와' 필터 (전체 보기면 건너뜀)
+    if who_with != "누구와든 좋아요! (전체 보기)":
+        if who_with not in dest.get("target_group", []):
+            continue
 
-        # 2. '어떤 종류의' 필터 적용
-        # 사용자가 아무것도 선택하지 않았다면 이 필터를 건너김
-        if travel_preferences:
-            # 선택된 모든 여행 취향이 여행지의 travel_type에 포함되어야 함 (AND 조건)
-            # any()를 사용하여 '하나라도' 일치하면 필터링되도록 할 수도 있습니다.
-            # 여기서는 '모두 포함되어야' 더 정밀한 추천이 되도록 all() 사용
-            if not all(pref in dest.get("travel_type", []) for pref in travel_preferences):
-                continue
+    # 2) '여행 유형' 필터 (선택이 있을 때만 AND 조건으로 적용)
+    if travel_preferences:
+        if not all(pref in dest.get("travel_type", []) for pref in travel_preferences):
+            continue
 
-        filtered_destinations.append(dest)
+    filtered_destinations.append(dest)
+
+
 
        # --- 필터링된 여행지 표시 ---
     if filtered_destinations:
