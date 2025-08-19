@@ -410,7 +410,7 @@ def main():
     season_destinations = travel_data.get(selected_season, [])
 
     filtered_destinations = []
-    for dest in season_destinations:
+     for dest in season_destinations:
     # 1) '누구와' 필터 (전체 보기면 건너뜀)
     if who_with != "누구와든 좋아요! (전체 보기)":
         if who_with not in dest.get("target_group", []):
