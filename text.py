@@ -442,7 +442,7 @@ def main():
         for i, destination in enumerate(filtered_destinations):
             with cols[i % 2]: # i % 2를 이용해 0번째 열, 1번째 열을 번갈아 가며 사용
                 st.markdown('<div class="card">', unsafe_allow_html=True)
-                st.image(destination["image"], caption=f"{destination['name']} - {destination['location']}", use_column_width=True)
+                st.image(destination["image"], caption=f"{destination['name']} - {destination['location']}", use_container_width=True)
                 st.markdown(f'<div class="destination-name">{destination["name"]}</div>', unsafe_allow_html=True)
                 st.markdown(f'**<span class="location-tag">📍 {destination["location"]}</span>**', unsafe_allow_html=True)
                 st.markdown(f"") # 한 칸 띄우기
