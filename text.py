@@ -424,7 +424,7 @@ def main():
                 continue
 
     # 🔧 이 여행지의 테마에서 '겨울'을 제외한 비교용 리스트
-    dest_types_no_winter = [t for t in dest.get("travel_type", []) if t != "겨울"]
+        dest_types_no_winter = [t for t in dest.get("travel_type", []) if t != "겨울"]
 
     # 여행 테마 필터 (AND 조건)
         if travel_preferences and not all(pref in dest_types_no_winter for pref in travel_preferences):
