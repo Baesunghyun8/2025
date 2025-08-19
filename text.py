@@ -350,56 +350,61 @@ def main():
         "겨울": "https://images.unsplash.com/photo-1490806450637-a9a7a9dc1972" # 눈 덮인 겨울 배경
     }
 
-   # --- 사이드바 필터 ---
-st.sidebar.markdown('<div class="sidebar-header">나만의 여행 찾기 🚀</div>', unsafe_allow_html=True)
+def main():
+    # --- 사이드바 필터 ---
+    st.sidebar.markdown('<div class="sidebar-header">나만의 여행 찾기 🚀</div>', unsafe_allow_html=True)
 
-# 0) 세션 기본값 세팅 (처음 한 번만)
-season_options = list(travel_data.keys())  # ["봄","여름","가을","겨울"]
-who_options = ["누구와든 좋아요! (전체 보기)", "가족", "친구", "연인", "개인"]
+    # 0) 세션 기본값 세팅 (처음 한 번만)
+    season_options = list(travel_data.keys())  # ["봄","여름","가을","겨울"]
+    who_options = ["누구와든 좋아요! (전체 보기)", "가족", "친구", "연인", "개인"]
 
-if "season" not in st.session_state:
-    st.session_state["season"] = season_options[0]        # 기본 "봄"
-if "who" not in st.session_state:
-    st.session_state["who"] = who_options[0]              # 기본 "누구와든..."
-if "types" not in st.session_state:
-    st.session_state["types"] = []                        # 기본 빈 선택
+    if "season" not in st.session_state:
+        st.session_state["season"] = season_options[0]
+    if "who" not in st.session_state:
+        st.session_state["who"] = who_options[0]
+    if "types" not in st.session_state:
+        st.session_state["types"] = []
 
-# 1) 계절 선택 (key 부여 + 세션값 반영)
-selected_season = st.sidebar.selectbox(
-    "🌸 **어떤 계절의 여행지를 찾으세요?**",
-    season_options,
-    index=season_options.index(st.session_state["season"]),
-    key="season"  # 🔧 key 추가
-)
+    # 1) 계절 선택
+    selected_season = st.sidebar.selectbox(
+        "🌸 **어떤 계절의 여행지를 찾으세요?**",
+        season_options,
+        index=season_options.index(st.session_state["season"]),
+        key="season"
+    )
 
-# 2) 누구와 함께 (key 부여 + 세션값 반영)
-who_with = st.sidebar.selectbox(
-    "🙋‍♀️ **누구와 함께 가시나요?**",
-    who_options,
-    index=who_options.index(st.session_state["who"]),
-    key="who"  # 🔧 key 추가
-)
+    # 2) 누구와 함께
+    who_with = st.sidebar.selectbox(
+        "🙋‍♀️ **누구와 함께 가시나요?**",
+        who_options,
+        index=who_options.index(st.session_state["who"]),
+        key="who"
+    )
 
-# 3) 여행 유형 (key 부여 + 세션값 반영)
-all_travel_types = sorted(list(set([t for season in travel_data.values() for item in season for t in item["travel_type"]])))
+    # 3) 여행 유형
+    all_travel_types = sorted(list(set([t for season in travel_data.values() for item in season for t in item["travel_type"]])))
 
-travel_preferences = st.sidebar.multiselect(
-    "🗺️ **어떤 종류의 여행을 원하시나요? (다중 선택 가능)**",
-    all_travel_types,
-    default=st.session_state["types"],
-    key="types"  # 🔧 key 추가
-)
+    travel_preferences = st.sidebar.multiselect(
+        "🗺️ **어떤 종류의 여행을 원하시나요? (다중 선택 가능)**",
+        all_travel_types,
+        default=st.session_state["types"],
+        key="types"
+    )
 
-# 🔧 4) 초기화 함수 + 버튼(on_click 사용, rerun 불필요)
-def reset_filters():
-    st.session_state["season"] = season_options[0]
-    st.session_state["who"] = who_options[0]
-    st.session_state["types"] = []
+    # 4) 초기화 함수 + 버튼
+    def reset_filters():
+        st.session_state["season"] = season_options[0]
+        st.session_state["who"] = who_options[0]
+        st.session_state["types"] = []
 
-st.sidebar.button("필터 초기화", on_click=reset_filters)  # 🔧 st.rerun() 제거
+    st.sidebar.button("필터 초기화", on_click=reset_filters)
 
-st.sidebar.markdown("---")
-st.sidebar.info("선택 필터가 많아질수록 더욱 **정확한 추천**을 받을 수 있어요! 😉")
+    st.sidebar.markdown("---")
+    st.sidebar.info("선택 필터가 많아질수록 더욱 **정확한 추천**을 받을 수 있어요! 😉")
+
+    # --- 여기서부터 계속 진행 ---
+    season_destinations = travel_data.get(selected_season, [])
+    ...
 
     # --- 여행지 필터링 로직 ---
     # 이제 'selected_season' 변수를 사용합니다.
