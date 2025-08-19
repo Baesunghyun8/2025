@@ -397,29 +397,6 @@ def main():
     st.sidebar.markdown("---")
     st.sidebar.info("선택 필터가 많아질수록 더욱 **정확한 추천**을 받을 수 있어요! 😉")
 
-        # 1. 계절 선택 드롭다운
-    selected_season = st.sidebar.selectbox(
-        "🌸 **어떤 계절의 여행지를 찾으세요?**",
-        list(travel_data.keys()),
-        index=0 # <--- ★ 이렇게 '0'으로 설정되어 있는지 확인해주세요!
-    )
-
-        # 2. 누구와 함께 가시나요? (선택 상자)
-    who_options = ["누구와든 좋아요! (전체 보기)", "가족", "친구", "연인", "개인"]
-    who_with = st.sidebar.selectbox(
-        "🙋‍♀️ **누구와 함께 가시나요?**",
-        who_options,
-        index=0 # <--- ★ 이렇게 '0'으로 설정되어 있는지 확인해주세요!
-    )
-
-        # 3. 어떤 종류의 여행을 원하시나요? (다중 선택 상자)
-    all_travel_types = sorted(list(set([t for season in travel_data.values() for item in season for t in item["travel_type"]])))
-    travel_preferences = st.sidebar.multiselect(
-        "🗺️ **어떤 종류의 여행을 원하시나요? (다중 선택 가능)**",
-        all_travel_types,
-        default=[] # <--- ★ 이렇게 '[]'으로 설정되어 있는지 확인해주세요!
-    )
-
     # --- 여행지 필터링 로직 ---
     # 이제 'selected_season' 변수를 사용합니다.
     season_destinations = travel_data.get(selected_season, [])
