@@ -159,19 +159,21 @@ def add_bg_from_url(url):
     except Exception as e:
         st.error(f"이미지 처리 중 오류 발생: {e}")
 
+
 # 현재 계절 확인 함수
 def get_current_season():
     now = datetime.now()
     month = now.month
     
     if 3 <= month <= 5:
-        return "봄", "https://images.unsplash.com/photo-1549405076-788e0b04c868" # 벚꽃, 봄 배경
+        return "봄", "https://images.unsplash.com/photo-1549405076-788e0b04c868" # 벚꽃, 봄 배경 (기존)
     elif 6 <= month <= 8:
-        return "여름", "https://images.unsplash.com/photo-1582053245084-5a639b56360c" # 여름 바다 배경
+        # 여기가 변경된 부분입니다!
+        return "여름", "https://images.unsplash.com/photo-1509233725246-d2426bb0203f" # 🌊 새로운 여름 바다 배경 이미지
     elif 9 <= month <= 11:
-        return "가을", "https://images.unsplash.com/photo-1473225071151-cf4615a77038" # 단풍, 가을 배경
+        return "가을", "https://images.unsplash.com/photo-1473225071151-cf4615a77038" # 단풍, 가을 배경 (기존)
     else:
-        return "겨울", "https://images.unsplash.com/photo-1490806450637-a9a7a9dc1972" # 눈 덮인 겨울 배경
+        return "겨울", "https://images.unsplash.com/photo-1490806450637-a9a7a9dc1972" # 눈 덮인 겨울 배경 (기존)
 
 # 여행지 데이터 (상세 정보 추가)
 # 각 여행지에 "target_group" (누구와 함께?) 및 "travel_type" (어떤 종류의 여행?) 필드를 추가
@@ -379,13 +381,13 @@ def main():
         default=[] # 기본값: 아무것도 선택되지 않음
     )
 
-    # 필터 초기화 버튼
+        # 필터 초기화 버튼
     if st.sidebar.button("필터 초기화"):
-        st.experimental_rerun() # 앱을 다시 실행하여 필터 초기화 효과
+        st.rerun() # 앱을 다시 실행하여 필터 초기화 효과 (여기만 변경!)
 
     st.sidebar.markdown("---")
     st.sidebar.info("선택 필터가 많아질수록 더욱 **정확한 추천**을 받을 수 있어요! 😉")
-
+    
     # --- 여행지 필터링 로직 ---
     season_destinations = travel_data.get(current_season, [])
     
