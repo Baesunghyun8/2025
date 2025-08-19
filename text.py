@@ -430,7 +430,7 @@ def main():
         if travel_preferences and not all(pref in dest_types_no_winter for pref in travel_preferences):
             continue
 
-    filtered_destinations.append(dest)
+        filtered_destinations.append(dest)
 
 # ↓ 여기서부터는 기존의 표시(UI) 코드로 이어가세요.
 
