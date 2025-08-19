@@ -483,32 +483,27 @@ def main():
 
 # i % 2를 이용해 0번째 열, 1번째 열을 번갈아 가며 사용
                 # 이미지 대신 그라데이션 배경과 아이콘을 활용한 카드 디자인
-                st.markdown(f"""
-                <div style="background: {current_gradient}; 
-                            padding: 25px; border-radius: 15px; 
-                            margin-bottom: 25px; box-shadow: 0 6px 12px rgba(0,0,0,0.15);">
-                    <div style="display: flex; align-items: center; margin-bottom: 15px;">
-                        <div style="font-size: 2.8rem; margin-right: 15px;">{current_icon}</div>
-                        <h2 style="margin: 0; color: #4A4A4A; font-weight: 700; word-break: keep-all; font-size: 1.5rem; line-height: 1.3; overflow-wrap: break-word;">{destination["name"]}</h2>
-                    </div>
-                    <p style="font-size: 1.1rem; margin: 10px 0; color: #555;"><strong>📍 위치:</strong> {destination["location"]}</p>
-                    <p style="font-size: 1rem; color: #444; margin: 15px 0; line-height: 1.5;">{destination["description"]}</p>
-                    <div style="margin-top: 20px;">
-                        <p style="margin-bottom: 8px; color: #666; font-weight: bold;">👨‍👩‍👧‍👦 추천 대상:</p>
-                        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px;">
-                            {' '.join([f'<span style="background-color: rgba(255,255,255,0.7); color: #388E3C; padding: 7px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">{group}</span>' for group in destination.get("target_group", [])])}
-                        </div>
-                    </div>
-                    <div>
-                        <p style="margin-bottom: 8px; color: #666; font-weight: bold;">🌈 여행 테마:</p>
-                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                            {' '.join([f'<span style="background-color: rgba(255,255,255,0.7); color: #EF6C00; padding: 7px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">{_type}</span>' for _type in destination.get("travel_type", [])])}
-                        </div>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
-    else:
-        st.info(f"😢 아쉽게도 선택하신 조건에 맞는 **{selected_season} 여행지**는 찾을 수 없었어요. 다른 조건을 선택해보시거나, **'누구와든 좋아요!'** 옵션으로 넓게 찾아보시는 건 어떠세요?")
+                st.markdown(
+f"""
+<div style=\"...\">
+<div style=\"display: flex; align-items: center; margin-bottom: 15px;\">
+<div style=\"font-size: 2.8rem; margin-right: 15px;\">{current_icon}</div>
+<h2 style=\"margin: 0; color: #4A4A4A; font-weight: 700;\">{destination["name"]}</h2>
+</div>
+<p><strong>📍 위치:</strong> {destination["location"]}</p>
+<p>{destination["description"]}</p>
+<div>
+<p>🌈 여행 테마:</p>
+<div style=\"display: flex; flex-wrap: wrap; gap: 8px;\">
+{' '.join([f'<span style=\"background-color: rgba(255,255,255,0.7); color: #EF6C00; padding: 7px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;\">{t}</span>' for t in display_types])}
+</div>
+</div>
+</div>
+""",
+unsafe_allow_html=True
+)
+else:
+st.info("조건에 맞는 여행지가 없습니다.")
 
 # Streamlit 앱 실행
 if __name__ == "__main__":
