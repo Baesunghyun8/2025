@@ -453,7 +453,7 @@ def main():
                             margin-bottom: 25px; box-shadow: 0 6px 12px rgba(0,0,0,0.15);">
                     <div style="display: flex; align-items: center; margin-bottom: 15px;">
                         <div style="font-size: 2.8rem; margin-right: 15px;">{current_icon}</div>
-                        <h2 style="margin: 0; color: #4A4A4A; font-weight: 700; word-break: keep-all;">{destination["name"]}</h2>
+                        <h2 style="margin: 0; color: #4A4A4A; font-weight: 700; word-break: keep-all; font-size: 1.5rem; line-height: 1.3; overflow-wrap: break-word;">{destination["name"]}</h2>
                     </div>
                     <p style="font-size: 1.1rem; margin: 10px 0; color: #555;"><strong>📍 위치:</strong> {destination["location"]}</p>
                     <p style="font-size: 1rem; color: #444; margin: 15px 0; line-height: 1.5;">{destination["description"]}</p>
