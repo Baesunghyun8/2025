@@ -422,7 +422,7 @@ def main():
 
        # --- 필터링된 여행지 표시 ---
     if filtered_destinations:
-        st.markdown(f'<div class="sub-header">🎉 하호님을 위한 {selected_season} 추천 여행지 🎉</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="sub-header">🎉 {selected_season} 추천 여행지 🎉</div>', unsafe_allow_html=True)
         
         # 여행지가 짝수든 홀수든 깔끔하게 2열로 정렬
         cols = st.columns(2) 
