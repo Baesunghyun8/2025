@@ -404,7 +404,7 @@ def main():
 
     # --- 여기서부터 계속 진행 ---
     season_destinations = travel_data.get(selected_season, [])
-    ...
+
 
     # --- 여행지 필터링 로직 ---
     season_destinations = travel_data.get(selected_season, [])
