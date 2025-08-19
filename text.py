@@ -131,7 +131,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# 배경 이미지 설정 함수 (Unsplash에서 여행 관련 이미지 URL 사용)
+# 배경 이미지 설정 함수
 def add_bg_from_url(url):
     try:
         response = requests.get(url, timeout=5) # 타임아웃 추가
@@ -155,28 +155,32 @@ def add_bg_from_url(url):
             unsafe_allow_html=True
         )
     except requests.exceptions.RequestException as e:
-        st.error(f"배경 이미지를 불러오는 데 실패했습니다: {e}")
+        # st.error(f"배경 이미지를 불러오는 데 실패했습니다: {e}") # 에러 메시지 대신 기본 배경색으로
+        st.markdown(
+            """
+            <style>
+            .stApp {
+                background-color: #F0F2F6; /* Fallback: 밝은 회색 배경 */
+            }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
     except Exception as e:
-        st.error(f"이미지 처리 중 오류 발생: {e}")
+        # st.error(f"이미지 처리 중 오류 발생: {e}") # 에러 메시지 대신 기본 배경색으로
+        st.markdown(
+            """
+            <style>
+            .stApp {
+                background-color: #F0F2F6; /* Fallback: 밝은 회색 배경 */
+            }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
 
-
-# 현재 계절 확인 함수
-def get_current_season():
-    now = datetime.now()
-    month = now.month
-    
-    if 3 <= month <= 5:
-        return "봄", "https://images.unsplash.com/photo-1549405076-788e0b04c868" # 벚꽃, 봄 배경 (기존)
-    elif 6 <= month <= 8:
-        # 여기가 변경된 부분입니다!
-        return "여름", "https://images.unsplash.com/photo-1509233725246-d2426bb0203f" # 🌊 새로운 여름 바다 배경 이미지
-    elif 9 <= month <= 11:
-        return "가을", "https://images.unsplash.com/photo-1473225071151-cf4615a77038" # 단풍, 가을 배경 (기존)
-    else:
-        return "겨울", "https://images.unsplash.com/photo-1490806450637-a9a7a9dc1972" # 눈 덮인 겨울 배경 (기존)
-
-# 여행지 데이터 (상세 정보 추가)
-# 각 여행지에 "target_group" (누구와 함께?) 및 "travel_type" (어떤 종류의 여행?) 필드를 추가
+# `get_current_season` 함수는 더 이상 사용하지 않음 (계절을 직접 선택)
+# 여행지 데이터 (상세 정보 포함)
 travel_data = {
     "봄": [
         {
@@ -198,7 +202,7 @@ travel_data = {
         {
             "name": "보성 녹차밭",
             "location": "전라남도 보성군",
-            "description": "푸른 녹차밭과 봄의 신선한 공기를 느끼며 힐링할 수 있는 곳입니다. 녹차 아이스크림도 꼭 맛보세요!",
+            "description": "푸른 녹차밭과 봄의 신선한 공기를 느끼며 힐링할 수 있는 공간. 녹차 아이스크림도 꼭 맛보세요!",
             "image": "https://images.unsplash.com/photo-1576089073624-b5059084a104",
             "target_group": ["친구", "연인", "개인"],
             "travel_type": ["자연", "힐링", "사진", "먹거리"]
@@ -350,20 +354,37 @@ travel_data = {
 
 # --- 메인 함수 ---
 def main():
-    # 현재 계절 및 배경 이미지 URL 가져오기
-    current_season, bg_image_url = get_current_season()
-    add_bg_from_url(bg_image_url) # 현재 계절에 맞는 배경 이미지 설정
-
-    # 메인 제목
-    st.markdown(f'<div class="main-header">✨ {current_season}의 <span style="color:#FFD700;">국내 여행지</span> 추천 ✨</div>', unsafe_allow_html=True)
-    st.markdown("<h3 style='text-align: center; color: #666;'>여행 가는 듯 설레는 마음으로 나만의 맞춤 여행지를 찾아보세요! 💖</h3>", unsafe_allow_html=True)
-
-    st.markdown("---")
+    # 계절별 배경 이미지 URL 매핑 (사용자 선택에 따라 변경)
+    season_backgrounds = {
+        "봄": "https://images.unsplash.com/photo-1549405076-788e0b04c868", # 벚꽃, 봄 배경
+        "여름": "https://images.unsplash.com/photo-1509233725246-d2426bb0203f", # 새로운 여름 바다 배경
+        "가을": "https://images.unsplash.com/photo-1473225071151-cf4615a77038", # 단풍, 가을 배경
+        "겨울": "https://images.unsplash.com/photo-1490806450637-a9a7a9dc1972" # 눈 덮인 겨울 배경
+    }
 
     # --- 사이드바 필터 ---
     st.sidebar.markdown('<div class="sidebar-header">나만의 여행 찾기 🚀</div>', unsafe_allow_html=True)
 
-    # 1. 누구와 함께 가시나요? (선택 상자)
+    # 1. 계절 선택 드롭다운 (새로 추가)
+    selected_season = st.sidebar.selectbox(
+        "🌸 **어떤 계절의 여행지를 찾으세요?**",
+        list(travel_data.keys()), # travel_data 딕셔너리의 키(봄, 여름, 가을, 겨울)를 옵션으로 사용
+        index=0 # 기본값으로 '봄' 선택
+    )
+    
+    # 선택된 계절에 맞는 배경 이미지 설정
+    selected_bg_url = season_backgrounds.get(selected_season)
+    if selected_bg_url: # URL이 유효할 경우에만 배경 설정 시도
+        add_bg_from_url(selected_bg_url)
+
+    # 메인 제목 (선택된 계절 반영)
+    st.markdown(f'<div class="main-header">✨ {selected_season}의 <span style="color:#FFD700;">국내 여행지</span> 추천 ✨</div>', unsafe_allow_html=True)
+    st.markdown("<h3 style='text-align: center; color: #666;'>여행 가는 듯 설레는 마음으로 나만의 맞춤 여행지를 찾아보세요! 💖</h3>", unsafe_allow_html=True)
+
+    st.markdown("---")
+
+
+    # 2. 누구와 함께 가시나요? (선택 상자)
     who_options = ["누구와든 좋아요! (전체 보기)", "가족", "친구", "연인", "개인"]
     who_with = st.sidebar.selectbox(
         "🙋‍♀️ **누구와 함께 가시나요?**",
@@ -371,7 +392,7 @@ def main():
         index=0 # 기본값: "누구와든 좋아요! (전체 보기)"
     )
 
-    # 2. 어떤 종류의 여행을 원하시나요? (다중 선택 상자)
+    # 3. 어떤 종류의 여행을 원하시나요? (다중 선택 상자)
     # 여행 유형 옵션을 동적으로 관리하거나, 필요한 경우 미리 정의
     all_travel_types = sorted(list(set([t for season in travel_data.values() for item in season for t in item["travel_type"]])))
     
@@ -381,15 +402,16 @@ def main():
         default=[] # 기본값: 아무것도 선택되지 않음
     )
 
-        # 필터 초기화 버튼
+    # 필터 초기화 버튼
     if st.sidebar.button("필터 초기화"):
-        st.rerun() # 앱을 다시 실행하여 필터 초기화 효과 (여기만 변경!)
+        st.rerun() # 앱을 다시 실행하여 필터 초기화 효과
 
     st.sidebar.markdown("---")
     st.sidebar.info("선택 필터가 많아질수록 더욱 **정확한 추천**을 받을 수 있어요! 😉")
-    
+
     # --- 여행지 필터링 로직 ---
-    season_destinations = travel_data.get(current_season, [])
+    # 이제 'selected_season' 변수를 사용합니다.
+    season_destinations = travel_data.get(selected_season, [])
     
     filtered_destinations = []
     for dest in season_destinations:
@@ -412,7 +434,7 @@ def main():
 
     # --- 필터링된 여행지 표시 ---
     if filtered_destinations:
-        st.markdown(f'<div class="sub-header">🎉 하호님을 위한 {current_season} 추천 여행지 🎉</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="sub-header">🎉 하호님을 위한 {selected_season} 추천 여행지 🎉</div>', unsafe_allow_html=True)
         
         # 여행지가 짝수든 홀수든 깔끔하게 2열로 정렬
         cols = st.columns(2) 
@@ -427,14 +449,14 @@ def main():
                 st.markdown(f"💖 **추천 포인트:** {destination['description']}")
                 
                 # '누구와' 태그 표시
-                st.markdown(f'**👨‍👩‍👧‍👦 추천 대상:** {" ".join([f"<span class='tag group-tag'>{group}</span>" for group in destination.get("target_group", [])])}', unsafe_allow_html=True)
+                st.markdown(f'**👨‍👩‍👧‍👦 추천 대상:** {" ".join([f"<span class=\'tag group-tag\'>{group}</span>" for group in destination.get("target_group", [])])}', unsafe_allow_html=True)
                 
                 # '여행 테마' 태그 표시
-                st.markdown(f'**🌈 여행 테마:** {" ".join([f"<span class='tag type-tag'>{_type}</span>" for _type in destination.get("travel_type", [])])}', unsafe_allow_html=True)
+                st.markdown(f'**🌈 여행 테마:** {" ".join([f"<span class=\'tag type-tag\'>{_type}</span>" for _type in destination.get("travel_type", [])])}', unsafe_allow_html=True)
                 
                 st.markdown('</div>', unsafe_allow_html=True) # 카드 닫기
     else:
-        st.info(f"😢 아쉽게도 선택하신 조건에 맞는 **{current_season} 여행지**는 찾을 수 없었어요. 다른 조건을 선택해보시거나, **'누구와든 좋아요!'** 옵션으로 넓게 찾아보시는 건 어떠세요?")
+        st.info(f"😢 아쉽게도 선택하신 조건에 맞는 **{selected_season} 여행지**는 찾을 수 없었어요. 다른 조건을 선택해보시거나, **'누구와든 좋아요!'** 옵션으로 넓게 찾아보시는 건 어떠세요?")
 
     st.markdown("---")
     st.markdown("<p style='text-align: center; color: #999;'>즐거운 여행 계획에 하웅이의 추천이 도움이 되었기를 바라요! ✈️</p>", unsafe_allow_html=True)
@@ -443,4 +465,3 @@ def main():
 # Streamlit 앱 실행
 if __name__ == "__main__":
     main()
-
