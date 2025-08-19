@@ -138,7 +138,7 @@ def add_bg_from_url(url):
         response.raise_for_status() # HTTP 에러 발생 시 예외 처리
         img = Image.open(BytesIO(response.content))
         img_bytes = BytesIO()
-        img.save(img_bytes, format='PNG') # PNG 형식으로 저장 (JPEG도 가능하지만 투명도 문제 고려)
+        img.save(img_bytes, format='PNG') # PNG 형식으로 저장
         encoded = base64.b64encode(img_bytes.getvalue()).decode()
         
         st.markdown(
@@ -154,25 +154,13 @@ def add_bg_from_url(url):
             """,
             unsafe_allow_html=True
         )
-    except requests.exceptions.RequestException as e:
-        # st.error(f"배경 이미지를 불러오는 데 실패했습니다: {e}") # 에러 메시지 대신 기본 배경색으로
-        st.markdown(
-            """
-            <style>
-            .stApp {
-                background-color: #F0F2F6; /* Fallback: 밝은 회색 배경 */
-            }
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
     except Exception as e:
-        # st.error(f"이미지 처리 중 오류 발생: {e}") # 에러 메시지 대신 기본 배경색으로
+        # 오류 발생 시 기본 배경색 사용하고 조용히 처리
         st.markdown(
             """
             <style>
             .stApp {
-                background-color: #F0F2F6; /* Fallback: 밝은 회색 배경 */
+                background-color: #f0f2f6; /* 기본 배경색으로 설정 */
             }
             </style>
             """,
