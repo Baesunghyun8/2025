@@ -460,7 +460,22 @@ def main():
         current_icon = season_icons.get(selected_season, "✨") # 기본값
 
         for i, destination in enumerate(filtered_destinations):
-            with cols[i % 2]: # i % 2를 이용해 0번째 열, 1번째 열을 번갈아 가며 사용
+    with cols[i % 2]:
+        # 여행지 카드 렌더링
+        display_types = [t for t in destination.get("travel_type", []) if t != "겨울"]  # ← 추가
+
+        st.markdown(f"""
+        <div style="...">
+            ...
+            <div>
+                <p style="margin-bottom: 8px; color: #666; font-weight: bold;">🌈 여행 테마:</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                    {' '.join([f'<span style="background-color: rgba(255,255,255,0.7); color: #EF6C00; padding: 7px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">{t}</span>' for t in display_types])}
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+# i % 2를 이용해 0번째 열, 1번째 열을 번갈아 가며 사용
                 # 이미지 대신 그라데이션 배경과 아이콘을 활용한 카드 디자인
                 st.markdown(f"""
                 <div style="background: {current_gradient}; 
