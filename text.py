@@ -407,10 +407,10 @@ def main():
     ...
 
     # --- 여행지 필터링 로직 ---
-season_destinations = travel_data.get(selected_season, [])
+    season_destinations = travel_data.get(selected_season, [])
 
-filtered_destinations = []                # ← main() 내부: 앞에 4칸
-for dest in season_destinations:          # ← 위와 같은 4칸
+    filtered_destinations = []                # ← main() 내부: 앞에 4칸
+        for dest in season_destinations:          # ← 위와 같은 4칸
     # ↓↓↓ for 블록 내부는 추가로 4칸(총 8칸) 들여쓰기
     # 1) '누구와' 필터 (전체 보기면 건너뜀)
     if who_with != "누구와든 좋아요! (전체 보기)":
@@ -425,7 +425,6 @@ for dest in season_destinations:          # ← 위와 같은 4칸
     filtered_destinations.append(dest)
 
 # ↓ 여기서부터는 기존의 표시(UI) 코드로 이어가세요.
-
 
 
        # --- 필터링된 여행지 표시 ---
